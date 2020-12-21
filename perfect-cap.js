@@ -203,6 +203,15 @@ const App = () => {
               label="Allow 3x Mark of Honor quest" />
           </Grid>
           <Grid item xs={12}>
+            <Typography display="block" variant="body2">
+              <strong>REMEMBER TO:</strong>
+              <ul className="warning">
+                <li><strong>always kill enemy with 100% HP and do it solo</strong>, otherwise you will get less honor per kill</li>
+                <li>allow duplicate ranks means you should find <strong>different enemies of the same rank</strong> in your combination, to not get honor kill decay</li>
+              </ul>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             <Button disabled={calculating} type="submit" variant="contained" color="primary">calculate</Button>
             <Button disabled={calculating} variant="outlined" classes={{ root: 'cancel' }} onClick={handleResetForm}>reset</Button>
           </Grid>
@@ -222,7 +231,7 @@ const App = () => {
               <Typography display="block" variant="subtitle1" align="center" classes={{ root: 'resultsTitle' }}>Found {combinations.length} possible combination(s):</Typography>
               <ReactVirtualized.List
                 width={400}
-                height={316}
+                height={452}
                 rowCount={combinations.length}
                 rowHeight={({ index }) => combinations[index].length * 45 + 10 + 36}
                 rowRenderer={({ key, index, style }) => (

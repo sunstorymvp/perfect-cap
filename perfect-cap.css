@@ -32,7 +32,7 @@ body.faction-horde {
 .results {
   box-sizing: border-box;
   width: 440px;
-  height: 410px;
+  height: 546px;
   padding: 20px;
   background-color: rgb(255 255 255 / 80%);
 }
@@ -53,6 +53,11 @@ body.faction-horde {
   width: 146px !important;
 }
 
+.warning {
+  margin: 6px 0 0 0;
+  padding: 0 0 0 20px;
+}
+
 .cancel {
   margin-left: 10px !important;
 }
@@ -60,6 +65,11 @@ body.faction-horde {
 .resultsTitle {
   margin-top: 5px !important;
   margin-bottom: 21px !important;
+}
+
+.resultsTitle:only-child {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .resultsTable + .resultsTable {

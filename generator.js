@@ -63,7 +63,6 @@ function* genCombinations(number, options) {
   const honorGains = HONOR_GAINS.reduce((result, gain) => {
     const isLowLevelRanker = gain.type === 'HK' && gain.level < 60 && gain.rank > 1;
     const isMarkOfHonorQuest = gain.type === 'quest' && gain.value === 398;
-    const isAllowed = options.allowMarkOfHonor && isMarkOfHonorQuest
 
     if (isLowLevelRanker) {
       return options.allowLowLevelRankers ? [...result, gain] : result;
