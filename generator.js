@@ -61,22 +61,27 @@ function* genCombinations(number, options) {
   }
 
   const honorGains = HONOR_GAINS.reduce((result, gain) => {
-    const isAllowedLevel = gain.type === 'HK' && gain.level >= options.minLevelFilter;
-    const isLowLevelRanker = gain.type === 'HK' && gain.level < 60 && gain.rank > 1;
+    const isHonorKill = gain.type === 'HK';
     const isMarkOfHonorQuest = gain.type === 'quest' && gain.value === 398;
 
-    if (isAllowedLevel) {
-      if (isLowLevelRanker) {
-        return options.allowLowLevelRankers ? [...result, gain] : result;
+    if (isHonorKill) {
+      const isAllowedLevel = gain.level >= options.minLevelFilter;
+      const isLowLevelRanker = gain.level < 60 && gain.rank > 1;
+
+      if (isAllowedLevel) {
+        if (isLowLevelRanker) {
+          return options.allowLowLevelRankers ? [...result, gain] : result;
+        } else {
+          return [...result, gain];
+        }
       } else {
-        return [...result, gain];
+        return result;
       }
     } else if (isMarkOfHonorQuest) {
       return options.allowMarkOfHonor ? [...result, gain] : result;
     } else {
-      return result;
+      return [...result, gain];
     }
-
   }, []);
 
   yield* genCombination(number, honorGains, []);
