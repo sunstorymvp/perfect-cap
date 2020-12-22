@@ -244,8 +244,9 @@ const App = () => {
             <Typography display="block" variant="body2">
               <strong>REMEMBER TO:</strong>
               <ul className="warning">
-                <li><strong>always kill enemy with 100% HP and do it solo</strong>, otherwise you will get less honor per kill</li>
-                <li>allow duplicate ranks means you should find <strong>different enemies of the same rank</strong> in your combination, to not get honor kill decay</li>
+                <li><strong>always kill target with 100% HP and do it solo</strong>, otherwise you get less honor for kill</li>
+                <li>allow duplicate ranks means you should find <strong>different targets of the same rank</strong> in your combination, to not get honor kill decay</li>
+                <li>you get less honor <strong>if target is engaged with any NPC or other player</strong></li>
               </ul>
             </Typography>
           </Grid>
@@ -269,7 +270,7 @@ const App = () => {
               <Typography display="block" variant="subtitle1" align="center" classes={{ root: 'resultsTitle' }}>Found {combinations.length} possible combination(s):</Typography>
               <ReactVirtualized.List
                 width={400}
-                height={452}
+                height={492}
                 rowCount={combinations.length}
                 rowHeight={({ index }) => combinations[index].length * 45 + 10 + 36}
                 rowRenderer={({ key, index, style }) => (
