@@ -61,8 +61,9 @@ const RANKS = {
 
 const normalizeFormState = (formState) => ({
   remainingHonor: Number(formState.remainingHonor) ?? 0,
-  maxCombinationLength: Number(formState.maxCombinationLength),
   maxUndercut: Number(formState.maxUndercut) ?? 0,
+  maxCombinationLength: Number(formState.maxCombinationLength),
+  minLevelFilter: Number(formState.minLevelFilter),
   allowDuplicateRanks: formState.allowDuplicateRanks,
   allowLowLevelRankers: formState.allowLowLevelRankers,
   allowMarkOfHonor: formState.allowMarkOfHonor,
@@ -81,6 +82,7 @@ const App = () => {
     remainingHonor: '',
     maxUndercut: '',
     maxCombinationLength: '4',
+    minLevelFilter: '48',
     allowDuplicateRanks: false,
     allowLowLevelRankers: false,
     allowMarkOfHonor: true,
@@ -133,6 +135,15 @@ const App = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (formState.minLevelFilter === '60') {
+      setFormState((prevState) => ({
+        ...prevState,
+        allowLowLevelRankers: false,
+      }));
+    }
+  }, [formState.minLevelFilter]);
 
   return (
     <Fragment>
@@ -191,12 +202,39 @@ const App = () => {
               </Select>
            </FormControl>
           </Grid>
+          <Grid item xs={6}>
+            <FormControl required variant="outlined">
+              <InputLabel htmlFor="minLevelFilter">Min level filter</InputLabel>
+              <Select
+                disabled={calculating}
+                onChange={handleInputChange}
+                value={formState.minLevelFilter}
+                id="minLevelFilter"
+                label="Min level filter *"
+                name="minLevelFilter"
+                classes={{ root: 'select' }}>
+                <MenuItem value="60">60</MenuItem>
+                <MenuItem value="59">59</MenuItem>
+                <MenuItem value="58">58</MenuItem>
+                <MenuItem value="57">57</MenuItem>
+                <MenuItem value="56">56</MenuItem>
+                <MenuItem value="55">55</MenuItem>
+                <MenuItem value="54">54</MenuItem>
+                <MenuItem value="53">53</MenuItem>
+                <MenuItem value="52">52</MenuItem>
+                <MenuItem value="51">51</MenuItem>
+                <MenuItem value="50">50</MenuItem>
+                <MenuItem value="49">49</MenuItem>
+                <MenuItem value="48">48</MenuItem>
+              </Select>
+           </FormControl>
+          </Grid>
           <Grid item xs={12}>
             <FormControlLabel
               control={<Switch disabled={calculating} onChange={handleSwitchChange} checked={formState.allowDuplicateRanks} name="allowDuplicateRanks" />}
               label="Allow duplicate ranks" />
             <FormControlLabel
-              control={<Switch disabled={calculating} onChange={handleSwitchChange} checked={formState.allowLowLevelRankers} name="allowLowLevelRankers" />}
+              control={<Switch disabled={calculating || formState.minLevelFilter === '60'} onChange={handleSwitchChange} checked={formState.allowLowLevelRankers} name="allowLowLevelRankers" />}
               label="Allow low-level rankers" />
             <FormControlLabel
               control={<Switch disabled={calculating} onChange={handleSwitchChange} checked={formState.allowMarkOfHonor} name="allowMarkOfHonor" />}
@@ -217,7 +255,7 @@ const App = () => {
           </Grid>
         </Grid>
       </form>
-      <Divider orientation="vertical" flexItem />
+      <Divider orientation="vertical" classes={{ root: 'divider' }} flexItem />
       <div className="results">
         {
           calculating ? (
@@ -245,10 +283,10 @@ const App = () => {
                             <TableCell align="right">
                               {
                                 combinationsFor > getCombinationTotalValue(combinations[index]) ? (
-                                  `Honor (undercut: ${combinationsFor - getCombinationTotalValue(combinations[index])})`
-                                ) : (
-                                  'Honor'
-                                )
+                                  <Fragment>
+                                    Honor <small>{`(undercut: ${combinationsFor - getCombinationTotalValue(combinations[index])})`}</small>
+                                  </Fragment>
+                                ) : 'Honor'
                               }
                             </TableCell>
                           </TableRow>
@@ -288,6 +326,9 @@ const App = () => {
           )
         }
       </div>
+      <Typography display="block" variant="body1" classes={{ root: 'footer' }}>
+        <small>created by Sunstory (sunstory#2823)</small>
+      </Typography>
     </Fragment>
   );
 };
